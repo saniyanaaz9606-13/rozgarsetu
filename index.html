@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RozgarSetu — Nearby Jobs by Voice &amp; WhatsApp</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ember-bg: #29374d;
+      --ember-indigo: #3f4167;
+      --ember-plum: #923e60;
+      --ember-rose: #ed4567;
+      --ember-peach: #f79175;
+    }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #faf7f7;
+      color: #1e293b;
+    }
+    .tap-target {
+      min-height: 44px;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(237, 69, 103, 0.55); }
+      70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(237, 69, 103, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(237, 69, 103, 0); }
+    }
+    .mic-listening {
+      animation: pulse-ring 1.4s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navbar (Embers #29374d) -->
+  <header class="bg-[#29374d] text-white sticky top-0 z-30 shadow-md border-b border-[#3f4167]">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand -->
+      <a href="#/home" class="nav-link flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ed4567] to-[#f79175] flex items-center justify-center shrink-0 shadow">
+          <i data-lucide="map-pin" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <span class="text-lg font-extrabold tracking-tight leading-tight block">RozgarSetu</span>
+          <span id="header-subtitle" class="text-[11px] text-[#f79175] leading-tight block font-medium">Nearby Jobs by Voice</span>
+        </div>
+      </a>
+
+      <!-- 3-Page Navigation -->
+      <nav class="flex items-center gap-1.5 order-3 sm:order-2 w-full sm:w-auto justify-center pt-1 sm:pt-0 border-t border-[#3f4167] sm:border-t-0">
+        <button type="button" data-page="home" class="page-nav-btn tap-target px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+          <i data-lucide="home" class="w-4 h-4"></i>
+          <span id="nav-home-label">Home</span>
+        </button>
+        <button type="button" data-page="jobs" class="page-nav-btn tap-target px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+          <i data-lucide="briefcase" class="w-4 h-4"></i>
+          <span id="nav-jobs-label">Job Board</span>
+        </button>
+        <button type="button" data-page="bot" class="page-nav-btn tap-target px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span id="nav-bot-label">WhatsApp Bot</span>
+        </button>
+      </nav>
+
+      <!-- Language Selector -->
+      <div class="flex items-center gap-1 bg-[#3f4167]/70 p-1 rounded-xl border border-[#923e60]/50 order-2 sm:order-3">
+        <button type="button" data-lang="en" class="lang-btn px-2 py-1 rounded-lg text-xs font-semibold transition">EN</button>
+        <button type="button" data-lang="hi" class="lang-btn px-2 py-1 rounded-lg text-xs font-semibold transition">हिन्दी</button>
+        <button type="button" data-lang="kn" class="lang-btn px-2 py-1 rounded-lg text-xs font-semibold transition">ಕನ್ನಡ</button>
+        <button type="button" data-lang="pa" class="lang-btn px-2 py-1 rounded-lg text-xs font-semibold transition">ਪੰਜਾਬੀ</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full">
+
+    <!-- ==================== PAGE 1: HOME ==================== -->
+    <section id="page-home" class="space-y-10 pb-12">
+      <!-- Embers Gradient Hero -->
+      <div class="bg-gradient-to-br from-[#29374d] via-[#3f4167] to-[#923e60] text-white">
+        <div class="max-w-5xl mx-auto px-4 py-12 sm:py-16 text-center space-y-5">
+          <span id="hero-badge" class="inline-block px-3.5 py-1 rounded-full bg-[#f79175]/20 border border-[#f79175]/40 text-[#f79175] text-xs font-semibold">
+            wHACKiest 2026 • Team Quantum Crew
+          </span>
+          <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight">
+            Speak your skill. <span class="text-[#f79175]">Find work nearby.</span>
+          </h1>
+          <p id="hero-desc" class="text-sm sm:text-base text-slate-200 max-w-xl mx-auto leading-relaxed">
+            A simple voice-first job board and WhatsApp bot connecting daily-wage and semi-skilled workers with nearby shops—no English or resume required.
+          </p>
+          <div class="flex flex-wrap justify-center gap-3 pt-2">
+            <button type="button" id="cta-find-jobs" class="tap-target px-5 py-3 rounded-xl bg-[#ed4567] hover:bg-[#d63657] text-white font-bold text-sm shadow-lg transition inline-flex items-center gap-2">
+              <i data-lucide="search" class="w-4 h-4"></i>
+              <span id="cta-find-label">Find Nearby Work</span>
+            </button>
+            <button type="button" id="cta-post-job" class="tap-target px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/25 transition inline-flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span id="cta-post-label">Post a Job</span>
+            </button>
+            <button type="button" id="cta-try-bot" class="tap-target px-5 py-3 rounded-xl bg-[#f79175] hover:bg-[#f47d5d] text-[#29374d] font-bold text-sm shadow-lg transition inline-flex items-center gap-2">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span id="cta-bot-label">Try WhatsApp Bot</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Simple Feature Cards -->
+      <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 border border-[#e7dde2] shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-[#ed4567]/12 text-[#ed4567] flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5"></i>
+          </div>
+          <h2 id="feat-1-title" class="text-base font-bold text-[#29374d]">1. Voice-First Search</h2>
+          <p id="feat-1-desc" class="text-xs sm:text-sm text-slate-600">Tap the mic to speak your trade in English, Hindi, Kannada, or Punjabi—and listen to job details read aloud.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-[#e7dde2] shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-[#923e60]/12 text-[#923e60] flex items-center justify-center">
+            <i data-lucide="navigation" class="w-5 h-5"></i>
+          </div>
+          <h2 id="feat-2-title" class="text-base font-bold text-[#29374d]">2. Within 5 km Radius</h2>
+          <p id="feat-2-desc" class="text-xs sm:text-sm text-slate-600">Matches workers with nearby shops and contractors so they save travel time and daily commute cost.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-[#e7dde2] shadow-sm space-y-2">
+          <div class="w-10 h-10 rounded-xl bg-[#3f4167]/12 text-[#3f4167] flex items-center justify-center">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+          </div>
+          <h2 id="feat-3-title" class="text-base font-bold text-[#29374d]">3. WhatsApp Ready</h2>
+          <p id="feat-3-desc" class="text-xs sm:text-sm text-slate-600">Works via a simple chat bot with no app download or resume needed—just name and phone number.</p>
+        </div>
+      </div>
+
+      <!-- Closest Openings Preview -->
+      <div class="max-w-5xl mx-auto px-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 id="home-closest-title" class="text-xl font-extrabold text-[#29374d]">Closest Openings</h2>
+          <button type="button" id="home-view-all-btn" class="tap-target px-4 py-2 rounded-xl bg-[#29374d] hover:bg-[#3f4167] text-white text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+            <span id="home-view-all-label">View All</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div id="home-featured-jobs" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 2: JOB BOARD ==================== -->
+    <section id="page-jobs" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-5">
+      <!-- Switcher -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-[#e7dde2] shadow-sm">
+        <h2 id="board-heading" class="text-lg font-extrabold text-[#29374d]">Local Job Board</h2>
+        <div class="flex gap-2 bg-[#f4eff1] p-1 rounded-xl">
+          <button type="button" data-tab="worker" class="tab-btn tap-target px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+            <i data-lucide="search" class="w-4 h-4"></i>
+            <span id="tab-worker-label">Find Work</span>
+          </button>
+          <button type="button" data-tab="employer" class="tab-btn tap-target px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span id="tab-employer-label">Post a Job</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- WORKER VIEW -->
+      <div id="view-worker" class="space-y-4">
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-[#e7dde2] space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 id="voice-title" class="text-base sm:text-lg font-bold text-[#29374d]">Speak or type to find nearby work</h3>
+              <p id="voice-hint" class="text-xs sm:text-sm text-slate-500">Try: "Electrician", "Bijli mistri", "Plumber", or "Mason"</p>
+            </div>
+            <button type="button" id="mic-btn" class="tap-target inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#ed4567] hover:bg-[#d63657] text-white font-semibold text-sm shadow-sm transition shrink-0">
+              <i data-lucide="mic" class="w-4 h-4"></i>
+              <span id="mic-btn-label">Tap to Speak</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+            <div class="sm:col-span-5 relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+              <input id="search-input" type="text" placeholder="Search skill or area..." class="w-full tap-target pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+            </div>
+            <div class="sm:col-span-3">
+              <select id="type-filter" class="w-full tap-target px-3 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#ed4567]">
+                <option value="all" id="opt-all">All Job Types</option>
+                <option value="daily" id="opt-daily">Daily Wage</option>
+                <option value="short" id="opt-short">Short-Term</option>
+                <option value="permanent" id="opt-perm">Permanent</option>
+              </select>
+            </div>
+            <div class="sm:col-span-4 flex flex-col justify-center bg-[#faf7f7] px-3 py-2 rounded-xl border border-[#e7dde2]">
+              <div class="flex items-center justify-between text-xs font-semibold text-[#29374d] mb-1">
+                <span id="radius-label">Max Distance</span>
+                <span id="radius-value" class="text-[#ed4567] font-bold">5 km</span>
+              </div>
+              <input id="radius-slider" type="range" min="1" max="15" value="5" class="w-full accent-[#ed4567] cursor-pointer" />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span id="quick-voice-label" class="text-xs font-medium text-slate-500">Quick filter:</span>
+            <button type="button" data-skill="All" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">All</button>
+            <button type="button" data-skill="Electrician" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">⚡ Electrician</button>
+            <button type="button" data-skill="Plumber" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">🔧 Plumber</button>
+            <button type="button" data-skill="Mason" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">🧱 Mason</button>
+            <button type="button" data-skill="Delivery" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">🛵 Delivery</button>
+            <button type="button" data-skill="Helper" class="skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition">📦 Shop Helper</button>
+          </div>
+        </div>
+
+        <p id="results-count" class="text-sm font-semibold text-[#29374d] px-1">Showing nearby openings</p>
+        <div id="jobs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- EMPLOYER VIEW -->
+      <div id="view-employer" class="hidden">
+        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-[#e7dde2] space-y-4">
+          <div>
+            <h3 id="emp-title" class="text-lg font-bold text-[#29374d]">Post a Local Opening</h3>
+            <p id="emp-subtitle" class="text-sm text-slate-500">Add a job in seconds—it appears on the Job Board and WhatsApp Bot right away.</p>
+          </div>
+
+          <form id="post-job-form" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label id="lbl-job-title" for="job-title" class="block text-xs font-semibold text-slate-700 mb-1">Job Title *</label>
+                <input id="job-title" type="text" required placeholder="e.g., House Wiring Electrician" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+              </div>
+              <div>
+                <label id="lbl-job-cat" for="job-category" class="block text-xs font-semibold text-slate-700 mb-1">Skill Category *</label>
+                <select id="job-category" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#ed4567]">
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Mason">Mason</option>
+                  <option value="Delivery">Delivery</option>
+                  <option value="Helper">Helper</option>
+                </select>
+              </div>
+              <div>
+                <label id="lbl-job-pay" for="job-pay" class="block text-xs font-semibold text-slate-700 mb-1">Pay Amount (₹) *</label>
+                <input id="job-pay" type="number" min="100" required placeholder="e.g., 850" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+              </div>
+              <div>
+                <label id="lbl-job-type" for="job-type" class="block text-xs font-semibold text-slate-700 mb-1">Work Type *</label>
+                <select id="job-type" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#ed4567]">
+                  <option value="daily">Daily Wage (per day)</option>
+                  <option value="short">Short-Term</option>
+                  <option value="permanent">Permanent (per month)</option>
+                </select>
+              </div>
+              <div>
+                <label id="lbl-job-emp" for="job-employer" class="block text-xs font-semibold text-slate-700 mb-1">Shop / Business Name *</label>
+                <input id="job-employer" type="text" required placeholder="e.g., Sri Lakshmi Hardware" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+              </div>
+              <div>
+                <label id="lbl-job-area" for="job-area" class="block text-xs font-semibold text-slate-700 mb-1">Area &amp; Distance (km) *</label>
+                <div class="flex gap-2">
+                  <input id="job-area" type="text" required placeholder="e.g., Indiranagar" class="flex-1 tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+                  <input id="job-distance" type="number" step="0.5" min="0.5" max="15" value="2.0" required class="w-20 tap-target px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label id="lbl-job-notes" for="job-notes" class="block text-xs font-semibold text-slate-700 mb-1">Work Details</label>
+              <textarea id="job-notes" rows="2" placeholder="e.g., 2-day site work, lunch provided." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]"></textarea>
+            </div>
+
+            <button type="submit" class="tap-target w-full sm:w-auto px-6 py-3 rounded-xl bg-[#923e60] hover:bg-[#7b3250] text-white font-bold text-sm transition inline-flex items-center justify-center gap-2 shadow-sm">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span id="post-submit-label">Publish Local Job</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 3: WHATSAPP BOT ==================== -->
+    <section id="page-bot" class="hidden max-w-3xl mx-auto px-4 py-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-[#e7dde2] overflow-hidden flex flex-col h-[560px]">
+        <div class="bg-[#923e60] text-white px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-[#ed4567] flex items-center justify-center font-bold text-sm shadow">RS</div>
+            <div>
+              <h2 id="bot-header-title" class="text-sm font-bold leading-tight">RozgarSetu WhatsApp Bot</h2>
+              <p id="bot-header-sub" class="text-[11px] text-[#fbd5c9]">Type or tap a skill to see instant local matches</p>
+            </div>
+          </div>
+          <button type="button" id="bot-reset-btn" class="text-xs font-semibold bg-[#29374d] hover:bg-[#3f4167] px-3 py-1.5 rounded-lg transition">Reset</button>
+        </div>
+
+        <div id="bot-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#f6f1f3]"></div>
+
+        <div class="bg-white px-3 py-2 border-t border-[#e7dde2] flex gap-2 overflow-x-auto">
+          <button type="button" data-bot-msg="Bijli mistri" class="bot-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-[#faf7f7] border border-[#e7dde2] text-xs font-semibold hover:bg-[#f79175]/20">⚡ Bijli mistri</button>
+          <button type="button" data-bot-msg="Plumber" class="bot-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-[#faf7f7] border border-[#e7dde2] text-xs font-semibold hover:bg-[#f79175]/20">🔧 Plumber</button>
+          <button type="button" data-bot-msg="Mason" class="bot-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-[#faf7f7] border border-[#e7dde2] text-xs font-semibold hover:bg-[#f79175]/20">🧱 Mason</button>
+          <button type="button" data-bot-msg="Daily wage" class="bot-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-[#faf7f7] border border-[#e7dde2] text-xs font-semibold hover:bg-[#f79175]/20">💵 Daily wage</button>
+        </div>
+
+        <form id="bot-form" class="p-3 bg-white border-t border-[#e7dde2] flex items-center gap-2">
+          <input id="bot-input" type="text" placeholder="Type skill or distance (e.g. Plumber, 5 km)..." class="flex-1 tap-target px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#923e60]" />
+          <button type="submit" class="tap-target px-4 py-2 rounded-xl bg-[#ed4567] hover:bg-[#d63657] text-white font-semibold text-sm transition inline-flex items-center gap-1.5">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span id="bot-send-label">Send</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="bg-white border-t border-[#e7dde2] mt-auto">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+      <span><strong class="text-[#29374d]">RozgarSetu</strong> • Team Quantum Crew • wHACKiest 2026</span>
+      <div class="flex items-center gap-4">
+        <a href="#/home" id="foot-home" class="footer-nav hover:text-[#ed4567] font-medium" data-page="home">Home</a>
+        <a href="#/jobs" id="foot-jobs" class="footer-nav hover:text-[#ed4567] font-medium" data-page="jobs">Job Board</a>
+        <a href="#/bot" id="foot-bot" class="footer-nav hover:text-[#ed4567] font-medium" data-page="bot">WhatsApp Bot</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Quick Apply Modal -->
+  <div id="apply-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#29374d]/70 p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-xl space-y-4 border border-[#e7dde2]">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span id="modal-badge" class="text-xs font-bold uppercase tracking-wider text-[#ed4567]">Quick Apply</span>
+          <h3 id="modal-job-title" class="text-lg font-bold text-[#29374d] mt-0.5">Job Title</h3>
+          <p id="modal-job-meta" class="text-xs text-slate-500 mt-0.5">Employer • Distance</p>
+        </div>
+        <button type="button" id="modal-close-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="apply-form" class="space-y-3">
+        <div>
+          <label id="lbl-worker-name" for="worker-name" class="block text-xs font-semibold text-slate-700 mb-1">Your Name *</label>
+          <input id="worker-name" type="text" required placeholder="e.g., Ramesh Kumar" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+        </div>
+        <div>
+          <label id="lbl-worker-phone" for="worker-phone" class="block text-xs font-semibold text-slate-700 mb-1">Phone / WhatsApp Number *</label>
+          <input id="worker-phone" type="tel" required placeholder="e.g., 98765 43210" class="w-full tap-target px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#ed4567]" />
+        </div>
+        <div class="flex gap-2 pt-1">
+          <button type="submit" id="modal-submit-btn" class="tap-target flex-1 px-4 py-2.5 rounded-xl bg-[#ed4567] hover:bg-[#d63657] text-white font-bold text-sm transition">Send Interest</button>
+          <button type="button" id="modal-cancel-btn" class="tap-target px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden bg-[#29374d] text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg border border-[#3f4167]"></div>
+
+  <script>
+    // Complete 4-language translations (English, Hindi, Kannada, Punjabi)
+    const I18N = {
+      en: {
+        subtitle: "Nearby Jobs by Voice",
+        navHome: "Home",
+        navJobs: "Job Board",
+        navBot: "WhatsApp Bot",
+        heroTitleHtml: 'Speak your skill. <span class="text-[#f79175]">Find work nearby.</span>',
+        heroDesc: "A simple voice-first job board and WhatsApp bot connecting daily-wage and semi-skilled workers with nearby shops—no English or resume required.",
+        ctaFind: "Find Nearby Work",
+        ctaPost: "Post a Job",
+        ctaBot: "Try WhatsApp Bot",
+        feat1Title: "1. Voice-First Search",
+        feat1Desc: "Tap the mic to speak your trade in English, Hindi, Kannada, or Punjabi—and listen to job details read aloud.",
+        feat2Title: "2. Within 5 km Radius",
+        feat2Desc: "Matches workers with nearby shops and contractors so they save travel time and daily commute cost.",
+        feat3Title: "3. WhatsApp Ready",
+        feat3Desc: "Works via a simple chat bot with no app download or resume needed—just name and phone number.",
+        homeClosest: "Closest Openings",
+        viewAll: "View All",
+        boardHeading: "Local Job Board",
+        tabWorker: "Find Work",
+        tabEmployer: "Post a Job",
+        voiceTitle: "Speak or type to find nearby work",
+        voiceHint: 'Try: "Electrician", "Bijli mistri", "Plumber", or "Mason"',
+        micBtn: "Tap to Speak",
+        listening: "Listening...",
+        searchPlaceholder: "Search skill or area...",
+        optAll: "All Job Types",
+        optDaily: "Daily Wage",
+        optShort: "Short-Term",
+        optPerm: "Permanent",
+        radiusLabel: "Max Distance",
+        quickVoice: "Quick filter:",
+        skills: { All: "All", Electrician: "⚡ Electrician", Plumber: "🔧 Plumber", Mason: "🧱 Mason", Delivery: "🛵 Delivery", Helper: "📦 Shop Helper" },
+        badges: { daily: "Daily Wage", short: "Short-Term", permanent: "Permanent" },
+        applyBtn: "Apply Now",
+        appliedBtn: "Applied ✓",
+        listenBtn: "Listen",
+        showing: (n) => `Showing ${n} nearby opening${n === 1 ? "" : "s"}`,
+        noJobs: (km) => `No openings within ${km} km`,
+        noJobsHint: "Try increasing the distance slider above.",
+        perDay: "/day",
+        perMonth: "/mo",
+        empTitle: "Post a Local Opening",
+        empSubtitle: "Add a job in seconds—it appears on the Job Board and WhatsApp Bot right away.",
+        lblTitle: "Job Title *",
+        lblCat: "Skill Category *",
+        lblPay: "Pay Amount (₹) *",
+        lblType: "Work Type *",
+        lblEmp: "Shop / Business Name *",
+        lblArea: "Area & Distance (km) *",
+        lblNotes: "Work Details",
+        postSubmit: "Publish Local Job",
+        botTitle: "RozgarSetu WhatsApp Bot",
+        botSub: "Type or tap a skill to see instant local matches",
+        botReset: "Reset",
+        botPlaceholder: "Type skill or distance (e.g. Plumber, 5 km)...",
+        botSend: "Send",
+        botWelcome: '<strong>Namaste! 🙏 Welcome to RozgarSetu Bot.</strong><br/>Send a skill (e.g. <em>Bijli mistri</em>, <em>Plumber</em>, <em>Mason</em>) or <em>Daily wage</em> to see nearby jobs.',
+        botFound: (n) => `Found <strong>${n}</strong> nearby match(es):`,
+        botNone: (q) => `No openings found for "<strong>${q}</strong>". Try <em>Electrician</em> or <em>Plumber</em>.`,
+        modalBadge: "Quick Apply",
+        lblWName: "Your Name *",
+        lblWPhone: "Phone / WhatsApp Number *",
+        modalSubmit: "Send Interest",
+        modalCancel: "Cancel",
+        speechLang: "en-IN",
+        speakTemplate: (title, emp, area, km, pay, unit, notes) => `${title}, at ${emp}, ${area}, ${km} kilometers away. Pay is ${pay} rupees ${unit}. ${notes}`,
+        unitDay: "per day",
+        unitMonth: "per month"
+      },
+      hi: {
+        subtitle: "बोलकर पास का काम पाएं",
+        navHome: "होम",
+        navJobs: "जॉब बोर्ड",
+        navBot: "व्हाट्सएप बॉट",
+        heroTitleHtml: 'अपना हुनर बोलें। <span class="text-[#f79175]">पास में काम पाएं।</span>',
+        heroDesc: "बिना अंग्रेज़ी या रिज़्यूमे के, दैनिक मज़दूरों और कारीगरों को पास की दुकानों से जोड़ने वाला आसान वॉयस जॉब बोर्ड और व्हाट्सएप बॉट।",
+        ctaFind: "पास का काम खोजें",
+        ctaPost: "काम पोस्ट करें",
+        ctaBot: "व्हाट्सएप बॉट चलाएं",
+        feat1Title: "1. बोलकर काम खोजें",
+        feat1Desc: "माइक दबाकर हिन्दी, कन्नड़, पंजाबी या अंग्रेज़ी में अपना काम बोलें और नौकरी की जानकारी सुनें।",
+        feat2Title: "2. 5 किमी के अंदर काम",
+        feat2Desc: "पास की दुकानों और ठेकेदारों से जुड़ें ताकि आने-जाने का समय और किराया बचे।",
+        feat3Title: "3. व्हाट्सएप पर आसान",
+        feat3Desc: "बिना कोई ऐप डाउनलोड किए या रिज़्यूमे बनाए, सिर्फ़ नाम और फ़ोन नंबर से आवेदन करें।",
+        homeClosest: "सबसे नज़दीकी काम",
+        viewAll: "सभी देखें",
+        boardHeading: "स्थानीय जॉब बोर्ड",
+        tabWorker: "काम खोजें",
+        tabEmployer: "काम पोस्ट करें",
+        voiceTitle: "पास का काम खोजने के लिए बोलें या लिखें",
+        voiceHint: 'बोलें: "Bijli mistri", "Plumber", या "Mason"',
+        micBtn: "बोलकर खोजें",
+        listening: "सुन रहे हैं...",
+        searchPlaceholder: "काम या इलाका खोजें...",
+        optAll: "सभी प्रकार के काम",
+        optDaily: "दैनिक मज़दूरी",
+        optShort: "कम समय का काम",
+        optPerm: "स्थायी नौकरी",
+        radiusLabel: "अधिकतम दूरी",
+        quickVoice: "त्वरित फ़िल्टर:",
+        skills: { All: "सभी", Electrician: "⚡ बिजली मिस्त्री", Plumber: "🔧 प्लंबर", Mason: "🧱 राजमिस्त्री", Delivery: "🛵 डिलीवरी", Helper: "📦 दुकान हेल्पर" },
+        badges: { daily: "दैनिक मज़दूरी", short: "कम अवधि", permanent: "स्थायी" },
+        applyBtn: "आवेदन करें",
+        appliedBtn: "आवेदन किया ✓",
+        listenBtn: "सुनें",
+        showing: (n) => `आस-पास ${n} काम उपलब्ध हैं`,
+        noJobs: (km) => `${km} किमी के अंदर कोई काम नहीं मिला`,
+        noJobsHint: "ऊपर दूरी स्लाइडर बढ़ाकर देखें।",
+        perDay: "/दिन",
+        perMonth: "/माह",
+        empTitle: "नया स्थानीय काम पोस्ट करें",
+        empSubtitle: "कुछ सेकंड में काम जोड़ें—यह तुरंत जॉब बोर्ड और व्हाट्सएप बॉट पर दिखेगा।",
+        lblTitle: "काम का नाम *",
+        lblCat: "हुनर श्रेणी *",
+        lblPay: "वेतन राशि (₹) *",
+        lblType: "काम का प्रकार *",
+        lblEmp: "दुकान / व्यवसाय का नाम *",
+        lblArea: "इलाका और दूरी (किमी) *",
+        lblNotes: "काम की जानकारी",
+        postSubmit: "जॉब पोस्ट करें",
+        botTitle: "रोज़गारसेतु व्हाट्सएप बॉट",
+        botSub: "पास का काम देखने के लिए टाइप करें या टैप करें",
+        botReset: "रीसेट",
+        botPlaceholder: "हुनर या दूरी लिखें (जैसे Plumber, 5 km)...",
+        botSend: "भेजें",
+        botWelcome: '<strong>नमस्ते! 🙏 रोज़गारसेतु बॉट में आपका स्वागत है।</strong><br/>पास के काम देखने के लिए हुनर भेजें (जैसे <em>Bijli mistri</em>, <em>Plumber</em>, <em>Mason</em>)।',
+        botFound: (n) => `आस-पास <strong>${n}</strong> काम मिले:`,
+        botNone: (q) => `"<strong>${q}</strong>" के लिए कोई काम नहीं मिला। <em>Electrician</em> या <em>Plumber</em> लिखें।`,
+        modalBadge: "तुरंत आवेदन",
+        lblWName: "आपका नाम *",
+        lblWPhone: "फ़ोन / व्हाट्सएप नंबर *",
+        modalSubmit: "आवेदन भेजें",
+        modalCancel: "रद्द करें",
+        speechLang: "hi-IN",
+        speakTemplate: (title, emp, area, km, pay, unit, notes) => `${title}, ${emp} पर, ${area}, ${km} किलोमीटर दूर। वेतन ${pay} रुपये ${unit}। ${notes}`,
+        unitDay: "प्रति दिन",
+        unitMonth: "प्रति माह"
+      },
+      kn: {
+        subtitle: "ಮಾತಿನ ಮೂಲಕ ಹತ್ತಿರದ ಕೆಲಸ",
+        navHome: "ಮುಖಪುಟ",
+        navJobs: "ಉದ್ಯೋಗ ಪಟ್ಟಿ",
+        navBot: "ವಾಟ್ಸಾಪ್ ಬಾಟ್",
+        heroTitleHtml: 'ನಿಮ್ಮ ಕೌಶಲ್ಯ ಹೇಳಿ. <span class="text-[#f79175]">ಹತ್ತಿರದ ಕೆಲಸ ಹುಡುಕಿ.</span>',
+        heroDesc: "ಇಂಗ್ಲಿಷ್ ಅಥವಾ ರೆಸ್ಯೂಮ್ ಇಲ್ಲದೆಯೇ, ದಿನಗೂಲಿ ಮತ್ತು ಅರೆ-ಕುಶಲ ಕಾರ್ಮಿಕರನ್ನು ಹತ್ತಿರದ ಅಂಗಡಿಗಳೊಂದಿಗೆ ಸಂಪರ್ಕಿಸುವ ಧ್ವನಿ ಆಧಾರಿತ ಉದ್ಯೋಗ ವೇದಿಕೆ.",
+        ctaFind: "ಹತ್ತಿರದ ಕೆಲಸ ಹುಡುಕಿ",
+        ctaPost: "ಕೆಲಸ ಪೋಸ್ಟ್ ಮಾಡಿ",
+        ctaBot: "ವಾಟ್ಸಾಪ್ ಬಾಟ್ ಬಳಸಿ",
+        feat1Title: "1. ಧ್ವನಿ ಮೂಲಕ ಹುಡುಕಾಟ",
+        feat1Desc: "ಮೈಕ್ ಒತ್ತಿ ಕನ್ನಡ, ಹಿಂದಿ, ಪಂಜಾಬಿ ಅಥವಾ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಕೆಲಸವನ್ನು ಹೇಳಿ ಮತ್ತು ವಿವರಗಳನ್ನು ಕೇಳಿ.",
+        feat2Title: "2. 5 ಕಿ.ಮೀ ಒಳಗಿನ ಕೆಲಸ",
+        feat2Desc: "ಹತ್ತಿರದ ಅಂಗಡಿಗಳು ಮತ್ತು ಗುತ್ತಿಗೆದಾರರೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಿ ಪ್ರಯಾಣ ವೆಚ್ಚ ಉಳಿಸಿ.",
+        feat3Title: "3. ವಾಟ್ಸಾಪ್ ಮೂಲಕ ಸುಲಭ",
+        feat3Desc: "ಯಾವುದೇ ಆ್ಯಪ್ ಡೌನ್‌ಲೋಡ್ ಇಲ್ಲದೆ, ಕೇವಲ ಹೆಸರು ಮತ್ತು ಫೋನ್ ನಂಬರ್‌ನೊಂದಿಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ.",
+        homeClosest: "ಅತ್ಯಂತ ಹತ್ತಿರದ ಕೆಲಸಗಳು",
+        viewAll: "ಎಲ್ಲವನ್ನೂ ನೋಡಿ",
+        boardHeading: "ಸ್ಥಳೀಯ ಉದ್ಯೋಗ ಪಟ್ಟಿ",
+        tabWorker: "ಕೆಲಸ ಹುಡುಕಿ",
+        tabEmployer: "ಕೆಲಸ ಪೋಸ್ಟ್ ಮಾಡಿ",
+        voiceTitle: "ಹತ್ತಿರದ ಕೆಲಸ ಹುಡುಕಲು ಮಾತನಾಡಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ",
+        voiceHint: 'ಉದಾಹರಣೆ: "Electrician", "Bijli mistri", "Plumber"',
+        micBtn: "ಮಾತನಾಡಿ",
+        listening: "ಆಲಿಸುತ್ತಿದೆ...",
+        searchPlaceholder: "ಕೆಲಸ ಅಥವಾ ಪ್ರದೇಶ ಹುಡುಕಿ...",
+        optAll: "ಎಲ್ಲಾ ಕೆಲಸಗಳು",
+        optDaily: "ದಿನಗೂಲಿ",
+        optShort: "ಅಲ್ಪಾವಧಿ",
+        optPerm: "ಖಾಯಂ ಕೆಲಸ",
+        radiusLabel: "ಗರಿಷ್ಠ ದೂರ",
+        quickVoice: "ತ್ವರಿತ ಫಿಲ್ಟರ್:",
+        skills: { All: "ಎಲ್ಲಾ", Electrician: "⚡ ಎಲೆಕ್ಟ್ರಿಷಿಯನ್", Plumber: "🔧 ಪ್ಲಂಬರ್", Mason: "🧱 ಮೇಸನ್", Delivery: "🛵 ಡೆಲಿವರಿ", Helper: "📦 ಅಂಗಡಿ ಸಹಾಯಕ" },
+        badges: { daily: "ದಿನಗೂಲಿ", short: "ಅಲ್ಪಾವಧಿ", permanent: "ಖಾಯಂ" },
+        applyBtn: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+        appliedBtn: "ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗಿದೆ ✓",
+        listenBtn: "ಕೇಳಿ",
+        showing: (n) => `ಹತ್ತಿರದಲ್ಲಿ ${n} ಕೆಲಸಗಳು ಲಭ್ಯವಿವೆ`,
+        noJobs: (km) => `${km} ಕಿ.ಮೀ ಒಳಗೆ ಯಾವುದೇ ಕೆಲಸ ಕಂಡುಬಂದಿಲ್ಲ`,
+        noJobsHint: "ಮೇಲಿನ ದೂರದ ಸ್ಲೈಡರ್ ಅನ್ನು ಹೆಚ್ಚಿಸಿ.",
+        perDay: "/ದಿನ",
+        perMonth: "/ತಿಂಗಳು",
+        empTitle: "ಸ್ಥಳೀಯ ಕೆಲಸವನ್ನು ಪೋಸ್ಟ್ ಮಾಡಿ",
+        empSubtitle: "ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಕೆಲಸವನ್ನು ಸೇರಿಸಿ—ಇದು ತಕ್ಷಣವೇ ಉದ್ಯೋಗ ಪಟ್ಟಿ ಮತ್ತು ಬಾಟ್‌ನಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ.",
+        lblTitle: "ಕೆಲಸದ ಹೆಸರು *",
+        lblCat: "ಕೌಶಲ್ಯ ವರ್ಗ *",
+        lblPay: "ವೇತನ (₹) *",
+        lblType: "ಕೆಲಸದ ವಿಧ *",
+        lblEmp: "ಅಂಗಡಿ / ಸಂಸ್ಥೆಯ ಹೆಸರು *",
+        lblArea: "ಪ್ರದೇಶ ಮತ್ತು ದೂರ (ಕಿ.ಮೀ) *",
+        lblNotes: "ಕೆಲಸದ ವಿವರಗಳು",
+        postSubmit: "ಕೆಲಸ ಪ್ರಕಟಿಸಿ",
+        botTitle: "ರೋಜ್‌ಗಾರ್‌ಸೇತು ವಾಟ್ಸಾಪ್ ಬಾಟ್",
+        botSub: "ಹತ್ತಿರದ ಕೆಲಸ ನೋಡಲು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ",
+        botReset: "ರೀಸೆಟ್",
+        botPlaceholder: "ಕೌಶಲ್ಯ ಅಥವಾ ದೂರ ಟೈಪ್ ಮಾಡಿ...",
+        botSend: "ಕಳುಹಿಸಿ",
+        botWelcome: '<strong>ನಮಸ್ಕಾರ! 🙏 ರೋಜ್‌ಗಾರ್‌ಸೇತು ಬಾಟ್‌ಗೆ ಸ್ವಾಗತ.</strong><br/>ಹತ್ತಿರದ ಕೆಲಸ ಹುಡುಕಲು ಕೌಶಲ್ಯ ಕಳುಹಿಸಿ (ಉದಾ: <em>Bijli mistri</em>, <em>Plumber</em>, <em>Mason</em>).',
+        botFound: (n) => `ಹತ್ತಿರದಲ್ಲಿ <strong>${n}</strong> ಕೆಲಸಗಳು ಸಿಕ್ಕಿವೆ:`,
+        botNone: (q) => `"<strong>${q}</strong>" ಗೆ ಯಾವುದೇ ಕೆಲಸ ಸಿಗಲಿಲ್ಲ. <em>Electrician</em> ಅಥವಾ <em>Plumber</em> ಪ್ರಯತ್ನಿಸಿ.`,
+        modalBadge: "ತ್ವರಿತ ಅರ್ಜಿ",
+        lblWName: "ನಿಮ್ಮ ಹೆಸರು *",
+        lblWPhone: "ಫೋನ್ / ವಾಟ್ಸಾಪ್ ಸಂಖ್ಯೆ *",
+        modalSubmit: "ಆಸಕ್ತಿ ಕಳುಹಿಸಿ",
+        modalCancel: "ರದ್ದುಮಾಡಿ",
+        speechLang: "kn-IN",
+        speakTemplate: (title, emp, area, km, pay, unit, notes) => `${title}, ${emp}, ${area}, ${km} ಕಿಲೋಮೀಟರ್ ದೂರದಲ್ಲಿದೆ. ವೇತನ ${pay} ರೂಪಾಯಿ ${unit}. ${notes}`,
+        unitDay: "ದಿನಕ್ಕೆ",
+        unitMonth: "ತಿಂಗಳಿಗೆ"
+      },
+      pa: {
+        subtitle: "ਬੋਲ ਕੇ ਨੇੜੇ ਦਾ ਕੰਮ ਲੱਭੋ",
+        navHome: "ਹੋਮ",
+        navJobs: "ਨੌਕਰੀਆਂ",
+        navBot: "ਵਟਸਐਪ ਬੋਟ",
+        heroTitleHtml: 'ਆਪਣਾ ਹੁਨਰ ਬੋਲੋ। <span class="text-[#f79175]">ਨੇੜੇ ਕੰਮ ਲੱਭੋ।</span>',
+        heroDesc: "ਬਿਨਾਂ ਅੰਗਰੇਜ਼ੀ ਜਾਂ ਰੈਜ਼ਿਊਮੇ ਦੇ, ਦਿਹਾੜੀਦਾਰ ਅਤੇ ਹੁਨਰਮੰਦ ਕਾਮਿਆਂ ਨੂੰ ਨੇੜਲੀਆਂ ਦੁਕਾਨਾਂ ਨਾਲ ਜੋੜਨ ਵਾਲਾ ਆਸਾਨ ਵੌਇਸ ਜੌਬ ਬੋਰਡ ਅਤੇ ਵਟਸਐਪ ਬੋਟ।",
+        ctaFind: "ਨੇੜੇ ਦਾ ਕੰਮ ਲੱਭੋ",
+        ctaPost: "ਕੰਮ ਪੋਸਟ ਕਰੋ",
+        ctaBot: "ਵਟਸਐਪ ਬੋਟ ਚਲਾਓ",
+        feat1Title: "1. ਬੋਲ ਕੇ ਕੰਮ ਲੱਭੋ",
+        feat1Desc: "ਮਾਈਕ ਦਬਾ ਕੇ ਪੰਜਾਬੀ, ਹਿੰਦੀ, ਕੰਨੜ ਜਾਂ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਆਪਣਾ ਕੰਮ ਬੋਲੋ ਅਤੇ ਵੇਰਵੇ ਸੁਣੋ।",
+        feat2Title: "2. 5 ਕਿ.ਮੀ. ਦੇ ਅੰਦਰ ਕੰਮ",
+        feat2Desc: "ਨੇੜਲੀਆਂ ਦੁਕਾਨਾਂ ਅਤੇ ਠੇਕੇਦਾਰਾਂ ਨਾਲ ਜੁੜੋ ਤਾਂ ਜੋ ਆਉਣ-ਜਾਣ ਦਾ ਸਮਾਂ ਅਤੇ ਕਿਰਾਇਆ ਬਚੇ।",
+        feat3Title: "3. ਵਟਸਐਪ 'ਤੇ ਆਸਾਨ",
+        feat3Desc: "ਬਿਨਾਂ ਕਿਸੇ ਐਪ ਡਾਊਨਲੋਡ ਦੇ, ਸਿਰਫ਼ ਨਾਮ ਅਤੇ ਫ਼ੋਨ ਨੰਬਰ ਨਾਲ ਅਰਜ਼ੀ ਦਿਓ।",
+        homeClosest: "ਸਭ ਤੋਂ ਨੇੜਲੇ ਕੰਮ",
+        viewAll: "ਸਾਰੇ ਦੇਖੋ",
+        boardHeading: "ਸਥਾਨਕ ਜੌਬ ਬੋਰਡ",
+        tabWorker: "ਕੰਮ ਲੱਭੋ",
+        tabEmployer: "ਕੰਮ ਪੋਸਟ ਕਰੋ",
+        voiceTitle: "ਨੇੜੇ ਦਾ ਕੰਮ ਲੱਭਣ ਲਈ ਬੋਲੋ ਜਾਂ ਲਿਖੋ",
+        voiceHint: 'ਬੋਲੋ: "Electrician", "Bijli mistri", "Plumber"',
+        micBtn: "ਬੋਲ ਕੇ ਲੱਭੋ",
+        listening: "ਸੁਣ ਰਹੇ ਹਾਂ...",
+        searchPlaceholder: "ਕੰਮ ਜਾਂ ਇਲਾਕਾ ਲੱਭੋ...",
+        optAll: "ਸਾਰੇ ਕੰਮ",
+        optDaily: "ਦਿਹਾੜੀ",
+        optShort: "ਥੋੜ੍ਹੇ ਸਮੇਂ ਲਈ",
+        optPerm: "ਪੱਕੀ ਨੌਕਰੀ",
+        radiusLabel: "ਵੱਧ ਤੋਂ ਵੱਧ ਦੂਰੀ",
+        quickVoice: "ਤੁਰੰਤ ਫਿਲਟਰ:",
+        skills: { All: "ਸਾਰੇ", Electrician: "⚡ ਬਿਜਲੀ ਮਿਸਤਰੀ", Plumber: "🔧 ਪਲੰਬਰ", Mason: "🧱 ਰਾਜਮਿਸਤਰੀ", Delivery: "🛵 ਡਿਲੀਵਰੀ", Helper: "📦 ਦੁਕਾਨ ਹੈਲਪਰ" },
+        badges: { daily: "ਦਿਹਾੜੀ", short: "ਥੋੜ੍ਹਾ ਸਮਾਂ", permanent: "ਪੱਕੀ" },
+        applyBtn: "ਅਰਜ਼ੀ ਦਿਓ",
+        appliedBtn: "ਅਰਜ਼ੀ ਦਿੱਤੀ ✓",
+        listenBtn: "ਸੁਣੋ",
+        showing: (n) => `ਨੇੜੇ ${n} ਕੰਮ ਉਪਲਬਧ ਹਨ`,
+        noJobs: (km) => `${km} ਕਿ.ਮੀ. ਦੇ ਅੰਦਰ ਕੋਈ ਕੰਮ ਨਹੀਂ ਮਿਲਿਆ`,
+        noJobsHint: "ਉੱਪਰ ਦੂਰੀ ਸਲਾਈਡਰ ਵਧਾ ਕੇ ਦੇਖੋ।",
+        perDay: "/ਦਿਨ",
+        perMonth: "/ਮਹੀਨਾ",
+        empTitle: "ਨਵਾਂ ਸਥਾਨਕ ਕੰਮ ਪੋਸਟ ਕਰੋ",
+        empSubtitle: "ਕੁਝ ਸਕਿੰਟਾਂ ਵਿੱਚ ਕੰਮ ਜੋੜੋ—ਇਹ ਤੁਰੰਤ ਜੌਬ ਬੋਰਡ ਅਤੇ ਵਟਸਐਪ ਬੋਟ 'ਤੇ ਦਿਖੇਗਾ।",
+        lblTitle: "ਕੰਮ ਦਾ ਨਾਮ *",
+        lblCat: "ਹੁਨਰ ਸ਼੍ਰੇਣੀ *",
+        lblPay: "ਤਨਖਾਹ (₹) *",
+        lblType: "ਕੰਮ ਦੀ ਕਿਸਮ *",
+        lblEmp: "ਦੁਕਾਨ / ਕਾਰੋਬਾਰ ਦਾ ਨਾਮ *",
+        lblArea: "ਇਲਾਕਾ ਅਤੇ ਦੂਰੀ (ਕਿ.ਮੀ.) *",
+        lblNotes: "ਕੰਮ ਦੇ ਵੇਰਵੇ",
+        postSubmit: "ਕੰਮ ਪੋਸਟ ਕਰੋ",
+        botTitle: "ਰੋਜ਼ਗਾਰਸੇਤੂ ਵਟਸਐਪ ਬੋਟ",
+        botSub: "ਨੇੜੇ ਦੇ ਕੰਮ ਦੇਖਣ ਲਈ ਟਾਈਪ ਕਰੋ ਜਾਂ ਟੈਪ ਕਰੋ",
+        botReset: "ਰੀਸੈੱਟ",
+        botPlaceholder: "ਹੁਨਰ ਜਾਂ ਦੂਰੀ ਲਿਖੋ (ਜਿਵੇਂ Plumber, 5 km)...",
+        botSend: "ਭੇਜੋ",
+        botWelcome: '<strong>ਸਤ ਸ੍ਰੀ ਅਕਾਲ! 🙏 ਰੋਜ਼ਗਾਰਸੇਤੂ ਬੋਟ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ।</strong><br/>ਨੇੜਲੇ ਕੰਮ ਦੇਖਣ ਲਈ ਹੁਨਰ ਭੇਜੋ (ਜਿਵੇਂ <em>Bijli mistri</em>, <em>Plumber</em>, <em>Mason</em>)।',
+        botFound: (n) => `ਨੇੜੇ <strong>${n}</strong> ਕੰਮ ਮਿਲੇ:`,
+        botNone: (q) => `"<strong>${q}</strong>" ਲਈ ਕੋਈ ਕੰਮ ਨਹੀਂ ਮਿਲਿਆ। <em>Electrician</em> ਜਾਂ <em>Plumber</em> ਲਿਖੋ।`,
+        modalBadge: "ਤੁਰੰਤ ਅਰਜ਼ੀ",
+        lblWName: "ਤੁਹਾਡਾ ਨਾਮ *",
+        lblWPhone: "ਫ਼ੋਨ / ਵਟਸਐਪ ਨੰਬਰ *",
+        modalSubmit: "ਅਰਜ਼ੀ ਭੇਜੋ",
+        modalCancel: "ਰੱਦ ਕਰੋ",
+        speechLang: "pa-IN",
+        speakTemplate: (title, emp, area, km, pay, unit, notes) => `${title}, ${emp} ਵਿਖੇ, ${area}, ${km} ਕਿਲੋਮੀਟਰ ਦੂਰ। ਤਨਖਾਹ ${pay} ਰੁਪਏ ${unit}। ${notes}`,
+        unitDay: "ਪ੍ਰਤੀ ਦਿਨ",
+        unitMonth: "ਪ੍ਰਤੀ ਮਹੀਨਾ"
+      }
+    };
+
+    const SEMANTIC_ALIASES = {
+      "bijli": "Electrician",
+      "bijli mistri": "Electrician",
+      "wireman": "Electrician",
+      "nal": "Plumber",
+      "pipe": "Plumber",
+      "mistri": "Mason",
+      "rajmistri": "Mason",
+      "driver": "Delivery",
+      "rider": "Delivery",
+      "mazdoor": "Helper"
+    };
+
+    const INITIAL_JOBS = [
+      {
+        id: "job-1",
+        category: "Electrician",
+        employer: "Annapurna Electricals",
+        distanceKm: 1.2,
+        pay: 900,
+        type: "daily",
+        verified: true,
+        loc: {
+          en: { title: "House Wiring & Fan Fitting Electrician", area: "Indiranagar 2nd Stage", notes: "Same-day work. Basic tester & pliers required. Tea & lunch included." },
+          hi: { title: "हाउस वायरिंग और पंखा फिटिंग मिस्त्री", area: "इंदिरानगर 2nd स्टेज", notes: "आज का काम। बेसिक टेस्टर और प्लायर साथ लाएं। चाय और खाना शामिल।" },
+          kn: { title: "ಮನೆ ವೈರಿಂಗ್ ಮತ್ತು ಫ್ಯಾನ್ ಫಿಟ್ಟಿಂಗ್ ಎಲೆಕ್ಟ್ರಿಷಿಯನ್", area: "ಇಂದಿರಾನಗರ 2ನೇ ಹಂತ", notes: "ಇಂದಿನ ಕೆಲಸ. ಟೆಸ್ಟರ್ ಮತ್ತು ಪ್ಲೈಯರ್ ತನ್ನಿ. ಚಹಾ ಮತ್ತು ಊಟ ಉಚಿತ." },
+          pa: { title: "ਘਰ ਦੀ ਵਾਇਰਿੰਗ ਅਤੇ ਪੱਖਾ ਫਿਟਿੰਗ ਇਲੈਕਟ੍ਰੀਸ਼ੀਅਨ", area: "ਇੰਦਿਰਾਨਗਰ ਦੂਜਾ ਸਟੇਜ", notes: "ਅੱਜ ਦਾ ਕੰਮ। ਟੈਸਟਰ ਅਤੇ ਪਲਾਸ ਨਾਲ ਲਿਆਓ। ਚਾਹ ਅਤੇ ਖਾਣਾ ਸ਼ਾਮਲ।" }
+        }
+      },
+      {
+        id: "job-2",
+        category: "Plumber",
+        employer: "Sri Vinayaka Traders",
+        distanceKm: 2.4,
+        pay: 850,
+        type: "short",
+        verified: true,
+        loc: {
+          en: { title: "Pipe Leak & Bathroom Fitting Plumber", area: "Domlur Main Road", notes: "4-day apartment maintenance work. Immediate joining." },
+          hi: { title: "पाइप लीक और बाथरूम फिटिंग प्लंबर", area: "डोमलूर मेन रोड", notes: "4 दिन का अपार्टमेंट मेंटेनेंस काम। तुरंत जॉइनिंग।" },
+          kn: { title: "ಪೈಪ್ ಲೀಕ್ ಮತ್ತು ಬಾತ್‌ರೂಮ್ ಫಿಟ್ಟಿಂಗ್ ಪ್ಲಂಬರ್", area: "ಡೊಮ್ಲೂರ್ ಮುಖ್ಯ ರಸ್ತೆ", notes: "4 ದಿನಗಳ ಅಪಾರ್ಟ್‌ಮೆಂಟ್ ನಿರ್ವಹಣೆ ಕೆಲಸ. ತಕ್ಷಣ ಸೇರ್ಪಡೆ." },
+          pa: { title: "ਪਾਈਪ ਲੀਕ ਅਤੇ ਬਾਥਰੂਮ ਫਿਟਿੰਗ ਪਲੰਬਰ", area: "ਡੋਮਲੂਰ ਮੇਨ ਰੋਡ", notes: "4 ਦਿਨ ਦਾ ਅਪਾਰਟਮੈਂਟ ਮੁਰੰਮਤ ਦਾ ਕੰਮ। ਤੁਰੰਤ ਜੁਆਇਨਿੰਗ।" }
+        }
+      },
+      {
+        id: "job-3",
+        category: "Mason",
+        employer: "Kaveri Civil Works",
+        distanceKm: 3.6,
+        pay: 1050,
+        type: "daily",
+        verified: true,
+        loc: {
+          en: { title: "Compound Wall & Plastering Mason", area: "Halasuru Cross", notes: "5-day site work. Helper assigned on site. Daily UPI payment." },
+          hi: { title: "दीवार और प्लास्टर राजमिस्त्री", area: "हलासुरु क्रॉस", notes: "5 दिन का साइट काम। हेल्पर साइट पर मिलेगा। रोज़ाना UPI भुगतान।" },
+          kn: { title: "ಕಾಂಪೌಂಡ್ ಗೋಡೆ ಮತ್ತು ಪ್ಲಾಸ್ಟರಿಂಗ್ ಮೇಸನ್", area: "ಹಲಸೂರು ಕ್ರಾಸ್", notes: "5 ದಿನಗಳ ಸೈಟ್ ಕೆಲಸ. ಸಹಾಯಕರು ಲಭ್ಯ. ಪ್ರತಿದಿನ UPI ಪಾವತಿ." },
+          pa: { title: "ਕੰਧ ਅਤੇ ਪਲਸਤਰ ਰਾਜਮਿਸਤਰੀ", area: "ਹਲਾਸੁਰੂ ਕਰਾਸ", notes: "5 ਦਿਨ ਦਾ ਸਾਈਟ ਕੰਮ। ਹੈਲਪਰ ਸਾਈਟ 'ਤੇ ਮਿਲੇਗਾ। ਰੋਜ਼ਾਨਾ UPI ਭੁਗਤਾਨ।" }
+        }
+      },
+      {
+        id: "job-4",
+        category: "Delivery",
+        employer: "Namma Kirana Hub",
+        distanceKm: 4.5,
+        pay: 16500,
+        type: "permanent",
+        verified: true,
+        loc: {
+          en: { title: "Two-Wheeler Grocery Delivery Rider", area: "Peenya 2nd Stage", notes: "Fixed 5 km delivery zone. Fuel allowance ₹150/day extra." },
+          hi: { title: "टू-व्हीलर किराना डिलीवरी राइडर", area: "पीन्या 2nd स्टेज", notes: "5 किमी का फिक्स ज़ोन। पेट्रोल खर्च ₹150/दिन अलग से।" },
+          kn: { title: "ದ್ವಿಚಕ್ರ ದಿನಸಿ ಡೆಲಿವರಿ ರೈಡರ್", area: "ಪೀಣ್ಯ 2ನೇ ಹಂತ", notes: "5 ಕಿ.ಮೀ ನಿಗದಿತ ವಲಯ. ದಿನಕ್ಕೆ ₹150 ಪೆಟ್ರೋಲ್ ಭತ್ಯೆ." },
+          pa: { title: "ਦੋ-ਪਹੀਆ ਕਰਿਆਨਾ ਡਿਲੀਵਰੀ ਰਾਈਡਰ", area: "ਪੀਨਿਆ ਦੂਜਾ ਸਟੇਜ", notes: "5 ਕਿ.ਮੀ. ਦਾ ਫਿਕਸ ਇਲਾਕਾ। ਪੈਟਰੋਲ ਭੱਤਾ ₹150/ਦਿਨ ਵੱਖਰਾ।" }
+        }
+      },
+      {
+        id: "job-5",
+        category: "Helper",
+        employer: "Balaji Agro & Tools",
+        distanceKm: 1.8,
+        pay: 650,
+        type: "daily",
+        verified: false,
+        loc: {
+          en: { title: "Hardware Shop Loading & Packing Helper", area: "Jeevanbhima Nagar", notes: "9 AM to 6 PM. No prior experience needed. Daily UPI payment." },
+          hi: { title: "हार्डवेयर दुकान लोडिंग और पैकिंग हेल्पर", area: "जीवनभीमा नगर", notes: "सुबह 9 से शाम 6। अनुभव की ज़रूरत नहीं। रोज़ाना UPI भुगतान।" },
+          kn: { title: "ಹಾರ್ಡ್‌ವೇರ್ ಅಂಗಡಿ ಲೋಡಿಂಗ್ ಮತ್ತು ಪ್ಯಾಕಿಂಗ್ ಸಹಾಯಕ", area: "ಜೀವನ್‌ಭೀಮಾ ನಗರ", notes: "ಬೆಳಿಗ್ಗೆ 9 ರಿಂದ ಸಂಜೆ 6. ಅನುಭವ ಅಗತ್ಯವಿಲ್ಲ. ಪ್ರತಿದಿನ UPI ಪಾವತಿ." },
+          pa: { title: "ਹਾਰਡਵੇਅਰ ਦੁਕਾਨ ਲੋਡਿੰਗ ਅਤੇ ਪੈਕਿੰਗ ਹੈਲਪਰ", area: "ਜੀਵਨਭੀਮਾ ਨਗਰ", notes: "ਸਵੇਰੇ 9 ਤੋਂ ਸ਼ਾਮ 6। ਤਜਰਬੇ ਦੀ ਲੋੜ ਨਹੀਂ। ਰੋਜ਼ਾਨਾ UPI ਭੁਗਤਾਨ।" }
+        }
+      },
+      {
+        id: "job-6",
+        category: "Electrician",
+        employer: "Surya Eco Solutions",
+        distanceKm: 6.2,
+        pay: 18000,
+        type: "permanent",
+        verified: true,
+        loc: {
+          en: { title: "Solar Water Heater Technician", area: "Old Airport Road", notes: "Training provided for 1 week. Two-wheeler license preferred." },
+          hi: { title: "सोलर वॉटर हीटर तकनीशियन", area: "ओल्ड एयरपोर्ट रोड", notes: "1 हफ्ते की ट्रेनिंग दी जाएगी। टू-व्हीलर लाइसेंस होना बेहतर।" },
+          kn: { title: "ಸೋಲಾರ್ ವಾಟರ್ ಹೀಟರ್ ತಂತ್ರಜ್ಞ", area: "ಓಲ್ಡ್ ಏರ್‌ಪೋರ್ಟ್ ರಸ್ತೆ", notes: "1 ವಾರ ತರಬೇತಿ ನೀಡಲಾಗುತ್ತದೆ. ದ್ವಿಚಕ್ರ ವಾಹನ ಪರವಾನಗಿ ಇದ್ದರೆ ಉತ್ತಮ." },
+          pa: { title: "ਸੋਲਰ ਵਾਟਰ ਹੀਟਰ ਟੈਕਨੀਸ਼ੀਅਨ", area: "ਓਲਡ ਏਅਰਪੋਰਟ ਰੋਡ", notes: "1 ਹਫ਼ਤੇ ਦੀ ਟ੍ਰੇਨਿੰਗ ਮਿਲੇਗੀ। ਦੋ-ਪਹੀਆ ਲਾਇਸੈਂਸ ਹੋਣਾ ਬਿਹਤਰ।" }
+        }
+      }
+    ];
+
+    const state = {
+      lang: "en",
+      currentPage: "home",
+      activeTab: "worker",
+      jobs: [...INITIAL_JOBS],
+      appliedIds: new Set(),
+      searchQuery: "",
+      selectedSkill: "All",
+      typeFilter: "all",
+      maxDistance: 5,
+      modalJobId: null,
+      isListening: false,
+      botHasUserMessages: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function getJobText(job) {
+      if (job.loc && job.loc[state.lang]) return job.loc[state.lang];
+      if (job.loc && job.loc.en) return job.loc.en;
+      return { title: job.title, area: job.area, notes: job.notes };
+    }
+
+    function showToast(msg) {
+      const toast = $("toast");
+      toast.textContent = msg;
+      toast.classList.remove("hidden");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.add("hidden"), 2800);
+    }
+
+    function formatPay(job) {
+      const t = I18N[state.lang];
+      const suffix = job.type === "permanent" ? t.perMonth : t.perDay;
+      return `₹${job.pay.toLocaleString("en-IN")}${suffix}`;
+    }
+
+    function typeBadge(type) {
+      const t = I18N[state.lang];
+      if (type === "daily") return { label: t.badges.daily, cls: "bg-[#f79175]/20 text-[#923e60] border-[#f79175]/50" };
+      if (type === "short") return { label: t.badges.short, cls: "bg-[#3f4167]/10 text-[#3f4167] border-[#3f4167]/25" };
+      return { label: t.badges.permanent, cls: "bg-emerald-50 text-emerald-800 border-emerald-200" };
+    }
+
+    function resolveSemanticSkill(query) {
+      const lower = query.trim().toLowerCase();
+      if (!lower) return null;
+      if (lower.includes("bijli mistri")) return "Electrician";
+      for (const [alias, cat] of Object.entries(SEMANTIC_ALIASES)) {
+        if (lower.includes(alias)) return cat;
+      }
+      return null;
+    }
+
+    function navigateTo(page, subTab) {
+      const valid = ["home", "jobs", "bot"];
+      state.currentPage = valid.includes(page) ? page : "home";
+      if (subTab && state.currentPage === "jobs") {
+        state.activeTab = subTab;
+      }
+      if (window.location.hash !== `#/${state.currentPage}`) {
+        try { window.location.hash = `#/${state.currentPage}`; } catch (e) {}
+      }
+      renderPage();
+      renderTabs();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderPage() {
+      const pages = { home: $("page-home"), jobs: $("page-jobs"), bot: $("page-bot") };
+      Object.entries(pages).forEach(([key, el]) => {
+        el.classList.toggle("hidden", key !== state.currentPage);
+      });
+
+      document.querySelectorAll(".page-nav-btn").forEach((btn) => {
+        const active = btn.dataset.page === state.currentPage;
+        btn.className = `page-nav-btn tap-target px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5 ${
+          active ? "bg-[#ed4567] text-white shadow-sm" : "text-slate-200 hover:bg-[#3f4167] hover:text-white"
+        }`;
+      });
+    }
+
+    function getFilteredJobs() {
+      const q = state.searchQuery.trim().toLowerCase();
+      const semanticCat = resolveSemanticSkill(q);
+      return state.jobs
+        .filter((job) => {
+          if (job.distanceKm > state.maxDistance) return false;
+          if (state.typeFilter !== "all" && job.type !== state.typeFilter) return false;
+          if (state.selectedSkill !== "All" && job.category !== state.selectedSkill) return false;
+          if (q) {
+            const locText = getJobText(job);
+            const enText = job.loc ? job.loc.en : locText;
+            const hay = `${locText.title} ${enText.title} ${job.category} ${job.employer} ${locText.area} ${enText.area} ${locText.notes}`.toLowerCase();
+            const matchesSemantic = semanticCat && job.category === semanticCat;
+            if (!hay.includes(q) && !matchesSemantic) return false;
+          }
+          return true;
+        })
+        .sort((a, b) => a.distanceKm - b.distanceKm);
+    }
+
+    function speakJob(jobId) {
+      const job = state.jobs.find((j) => j.id === jobId);
+      if (!job) return;
+      if (!("speechSynthesis" in window)) {
+        showToast("Voice readout is not supported in this browser.");
+        return;
+      }
+      const t = I18N[state.lang];
+      const info = getJobText(job);
+      window.speechSynthesis.cancel();
+      const unit = job.type === "permanent" ? t.unitMonth : t.unitDay;
+      const text = t.speakTemplate(info.title, job.employer, info.area, job.distanceKm, job.pay, unit, info.notes);
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = t.speechLang;
+      utter.rate = 0.95;
+      window.speechSynthesis.speak(utter);
+      showToast(`🔊 ${info.title}`);
+    }
+
+    function renderLanguage() {
+      const t = I18N[state.lang];
+      $("header-subtitle").textContent = t.subtitle;
+      $("nav-home-label").textContent = t.navHome;
+      $("nav-jobs-label").textContent = t.navJobs;
+      $("nav-bot-label").textContent = t.navBot;
+      $("foot-home").textContent = t.navHome;
+      $("foot-jobs").textContent = t.navJobs;
+      $("foot-bot").textContent = t.navBot;
+
+      $("hero-title").innerHTML = t.heroTitleHtml;
+      $("hero-desc").textContent = t.heroDesc;
+      $("cta-find-label").textContent = t.ctaFind;
+      $("cta-post-label").textContent = t.ctaPost;
+      $("cta-bot-label").textContent = t.ctaBot;
+      $("feat-1-title").textContent = t.feat1Title;
+      $("feat-1-desc").textContent = t.feat1Desc;
+      $("feat-2-title").textContent = t.feat2Title;
+      $("feat-2-desc").textContent = t.feat2Desc;
+      $("feat-3-title").textContent = t.feat3Title;
+      $("feat-3-desc").textContent = t.feat3Desc;
+      $("home-closest-title").textContent = t.homeClosest;
+      $("home-view-all-label").textContent = t.viewAll;
+
+      $("board-heading").textContent = t.boardHeading;
+      $("tab-worker-label").textContent = t.tabWorker;
+      $("tab-employer-label").textContent = t.tabEmployer;
+      $("voice-title").textContent = t.voiceTitle;
+      $("voice-hint").textContent = t.voiceHint;
+      $("mic-btn-label").textContent = state.isListening ? t.listening : t.micBtn;
+      $("search-input").placeholder = t.searchPlaceholder;
+      $("opt-all").textContent = t.optAll;
+      $("opt-daily").textContent = t.optDaily;
+      $("opt-short").textContent = t.optShort;
+      $("opt-perm").textContent = t.optPerm;
+      $("radius-label").textContent = t.radiusLabel;
+      $("quick-voice-label").textContent = t.quickVoice;
+
+      $("emp-title").textContent = t.empTitle;
+      $("emp-subtitle").textContent = t.empSubtitle;
+      $("lbl-job-title").textContent = t.lblTitle;
+      $("lbl-job-cat").textContent = t.lblCat;
+      $("lbl-job-pay").textContent = t.lblPay;
+      $("lbl-job-type").textContent = t.lblType;
+      $("lbl-job-emp").textContent = t.lblEmp;
+      $("lbl-job-area").textContent = t.lblArea;
+      $("lbl-job-notes").textContent = t.lblNotes;
+      $("post-submit-label").textContent = t.postSubmit;
+
+      $("bot-header-title").textContent = t.botTitle;
+      $("bot-header-sub").textContent = t.botSub;
+      $("bot-reset-btn").textContent = t.botReset;
+      $("bot-input").placeholder = t.botPlaceholder;
+      $("bot-send-label").textContent = t.botSend;
+
+      $("modal-badge").textContent = t.modalBadge;
+      $("lbl-worker-name").textContent = t.lblWName;
+      $("lbl-worker-phone").textContent = t.lblWPhone;
+      $("modal-submit-btn").textContent = t.modalSubmit;
+      $("modal-cancel-btn").textContent = t.modalCancel;
+
+      document.querySelectorAll(".skill-chip").forEach((chip) => {
+        const key = chip.dataset.skill;
+        if (t.skills[key]) chip.textContent = t.skills[key];
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        const active = btn.dataset.lang === state.lang;
+        btn.className = `lang-btn px-2 py-1 rounded-lg text-xs font-semibold transition ${
+          active ? "bg-[#ed4567] text-white" : "text-slate-200 hover:text-white"
+        }`;
+      });
+
+      if (!state.botHasUserMessages) {
+        initBotChat();
+      }
+    }
+
+    function renderTabs() {
+      const views = { worker: $("view-worker"), employer: $("view-employer") };
+      Object.entries(views).forEach(([key, el]) => {
+        el.classList.toggle("hidden", key !== state.activeTab);
+      });
+
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        const active = btn.dataset.tab === state.activeTab;
+        btn.className = `tab-btn tap-target px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition inline-flex items-center gap-1.5 ${
+          active ? "bg-[#29374d] text-white shadow-sm" : "text-[#29374d] hover:bg-white"
+        }`;
+      });
+    }
+
+    function renderSkillChips() {
+      document.querySelectorAll(".skill-chip").forEach((chip) => {
+        const active = chip.dataset.skill === state.selectedSkill;
+        chip.className = `skill-chip px-3 py-1 rounded-full text-xs font-semibold border transition ${
+          active
+            ? "bg-[#ed4567] text-white border-[#ed4567]"
+            : "bg-[#faf7f7] text-[#29374d] border-[#e7dde2] hover:bg-[#f79175]/15"
+        }`;
+      });
+    }
+
+    function buildJobCard(job) {
+      const t = I18N[state.lang];
+      const info = getJobText(job);
+      const badge = typeBadge(job.type);
+      const isApplied = state.appliedIds.has(job.id);
+      const catLabel = t.skills[job.category] || job.category;
+      return `
+        <article class="bg-white rounded-2xl p-4 shadow-sm border border-[#e7dde2] flex flex-col justify-between gap-3 hover:border-[#ed4567] transition">
+          <div class="space-y-2.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${badge.cls}">${badge.label}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#3f4167]/10 text-[#3f4167]">${catLabel}</span>
+              </div>
+              <span class="text-base font-extrabold text-[#923e60] shrink-0">${formatPay(job)}</span>
+            </div>
+
+            <div>
+              <h3 class="text-base font-bold text-[#29374d] leading-snug">${info.title}</h3>
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-slate-600">
+                <span class="inline-flex items-center gap-1 font-medium">
+                  <i data-lucide="store" class="w-3.5 h-3.5 text-slate-400"></i>
+                  ${job.employer}
+                  ${job.verified ? '<span class="text-[#ed4567] font-bold" title="Verified">✓</span>' : ""}
+                </span>
+                <span class="inline-flex items-center gap-1 font-semibold text-[#ed4567]">
+                  <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+                  ${info.area} • ${job.distanceKm} km
+                </span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">${info.notes}</p>
+          </div>
+
+          <div class="flex items-center gap-2 pt-2 border-t border-[#f4eff1]">
+            <button type="button" data-listen-id="${job.id}" class="listen-btn tap-target px-3 py-2 rounded-xl bg-[#faf7f7] hover:bg-[#f79175]/20 text-[#29374d] text-xs font-semibold inline-flex items-center gap-1.5 transition border border-[#e7dde2]">
+              <i data-lucide="volume-2" class="w-4 h-4 text-[#ed4567]"></i>
+              <span>${t.listenBtn}</span>
+            </button>
+            <button type="button" data-apply-id="${job.id}" ${isApplied ? "disabled" : ""} class="apply-btn tap-target flex-1 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+              isApplied
+                ? "bg-emerald-100 text-emerald-800 cursor-default"
+                : "bg-[#29374d] hover:bg-[#3f4167] text-white"
+            }">
+              ${isApplied ? t.appliedBtn : t.applyBtn}
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderJobs() {
+      const t = I18N[state.lang];
+      const filtered = getFilteredJobs();
+      $("results-count").textContent = t.showing(filtered.length);
+
+      const closest = [...state.jobs].sort((a, b) => a.distanceKm - b.distanceKm).slice(0, 2);
+      $("home-featured-jobs").innerHTML = closest.map(buildJobCard).join("");
+
+      const container = $("jobs-list");
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-white rounded-2xl p-8 text-center border border-[#e7dde2] space-y-2">
+            <p class="text-base font-bold text-[#29374d]">${t.noJobs(state.maxDistance)}</p>
+            <p class="text-sm text-slate-500">${t.noJobsHint}</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(buildJobCard).join("");
+      lucide.createIcons();
+    }
+
+    function startVoiceSearch() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        showToast("Browser voice mic unavailable here — try typing or tapping a filter chip!");
+        return;
+      }
+      const t = I18N[state.lang];
+      const rec = new SpeechRec();
+      rec.lang = t.speechLang;
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+
+      state.isListening = true;
+      $("mic-btn").classList.add("mic-listening");
+      renderLanguage();
+
+      rec.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        $("search-input").value = transcript;
+        state.searchQuery = transcript;
+        state.selectedSkill = "All";
+        renderSkillChips();
+        renderJobs();
+        showToast(`Heard: "${transcript}"`);
+      };
+
+      rec.onerror = () => showToast("Could not access microphone — use search or quick chips.");
+      rec.onend = () => {
+        state.isListening = false;
+        $("mic-btn").classList.remove("mic-listening");
+        renderLanguage();
+      };
+
+      try {
+        rec.start();
+      } catch (e) {
+        state.isListening = false;
+        $("mic-btn").classList.remove("mic-listening");
+        renderLanguage();
+        showToast("Microphone unavailable in preview.");
+      }
+    }
+
+    function openApplyModal(jobId) {
+      const job = state.jobs.find((j) => j.id === jobId);
+      if (!job) return;
+      const info = getJobText(job);
+      state.modalJobId = jobId;
+      $("modal-job-title").textContent = info.title;
+      $("modal-job-meta").textContent = `${job.employer} • ${info.area} (${job.distanceKm} km) • ${formatPay(job)}`;
+      $("apply-modal").classList.remove("hidden");
+      $("apply-modal").classList.add("flex");
+    }
+
+    function closeApplyModal() {
+      state.modalJobId = null;
+      $("apply-modal").classList.add("hidden");
+      $("apply-modal").classList.remove("flex");
+      $("apply-form").reset();
+    }
+
+    function appendBotMessage(sender, htmlText) {
+      const box = $("bot-messages");
+      const isUser = sender === "user";
+      const wrap = document.createElement("div");
+      wrap.className = `flex ${isUser ? "justify-end" : "justify-start"}`;
+      wrap.innerHTML = `
+        <div class="max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm shadow-sm ${
+          isUser ? "bg-[#f79175]/35 text-[#29374d] rounded-br-none border border-[#f79175]/50" : "bg-white text-[#29374d] rounded-bl-none border border-[#e7dde2]"
+        }">
+          ${htmlText}
+        </div>
+      `;
+      box.appendChild(wrap);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function initBotChat() {
+      state.botHasUserMessages = false;
+      $("bot-messages").innerHTML = "";
+      appendBotMessage("bot", I18N[state.lang].botWelcome);
+    }
+
+    function handleBotQuery(rawText) {
+      const text = rawText.trim();
+      if (!text) return;
+      state.botHasUserMessages = true;
+      appendBotMessage("user", text);
+
+      const t = I18N[state.lang];
+      const lower = text.toLowerCase();
+      let matches = [...state.jobs];
+
+      const kmMatch = lower.match(/(\d+(?:\.\d+)?)\s*km/);
+      if (kmMatch) {
+        matches = matches.filter((j) => j.distanceKm <= parseFloat(kmMatch[1]));
+      }
+      if (lower.includes("daily")) {
+        matches = matches.filter((j) => j.type === "daily");
+      } else if (lower.includes("permanent")) {
+        matches = matches.filter((j) => j.type === "permanent");
+      }
+
+      const categories = ["electrician", "plumber", "mason", "delivery", "helper"];
+      let matchedCat = categories.find((c) => lower.includes(c));
+      if (!matchedCat) {
+        const semantic = resolveSemanticSkill(lower);
+        if (semantic) matchedCat = semantic.toLowerCase();
+      }
+      if (matchedCat) {
+        matches = matches.filter((j) => j.category.toLowerCase() === matchedCat);
+      }
+
+      matches.sort((a, b) => a.distanceKm - b.distanceKm);
+
+      if (matches.length === 0) {
+        appendBotMessage("bot", t.botNone(text));
+        return;
+      }
+
+      const listHtml = matches
+        .slice(0, 3)
+        .map((j, idx) => {
+          const info = getJobText(j);
+          return `<div class="mt-2 p-2 rounded-xl bg-[#faf7f7] border border-[#e7dde2]">
+            <div class="font-bold text-[#29374d]">${idx + 1}. ${info.title}</div>
+            <div class="text-slate-600">${j.employer} • ${info.area} (${j.distanceKm} km)</div>
+            <div class="font-bold text-[#923e60] mt-0.5">${formatPay(j)}</div>
+          </div>`;
+        })
+        .join("");
+
+      appendBotMessage("bot", `${t.botFound(matches.length)}${listHtml}`);
+    }
+
+    document.querySelectorAll(".page-nav-btn").forEach((btn) => {
+      btn.addEventListener("click", () => navigateTo(btn.dataset.page));
+    });
+
+    document.querySelectorAll(".footer-nav").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        navigateTo(link.dataset.page);
+      });
+    });
+
+    document.querySelector(".nav-link").addEventListener("click", (e) => {
+      e.preventDefault();
+      navigateTo("home");
+    });
+
+    $("cta-find-jobs").addEventListener("click", () => navigateTo("jobs", "worker"));
+    $("cta-post-job").addEventListener("click", () => navigateTo("jobs", "employer"));
+    $("cta-try-bot").addEventListener("click", () => navigateTo("bot"));
+    $("home-view-all-btn").addEventListener("click", () => navigateTo("jobs", "worker"));
+
+    window.addEventListener("hashchange", () => {
+      const h = window.location.hash.replace("#/", "");
+      if (["home", "jobs", "bot"].includes(h) && h !== state.currentPage) {
+        state.currentPage = h;
+        renderPage();
+      }
+    });
+
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.lang = btn.dataset.lang;
+        renderLanguage();
+        renderJobs();
+      });
+    });
+
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.activeTab = btn.dataset.tab;
+        renderTabs();
+      });
+    });
+
+    $("mic-btn").addEventListener("click", startVoiceSearch);
+
+    $("search-input").addEventListener("input", (e) => {
+      state.searchQuery = e.target.value;
+      renderJobs();
+    });
+
+    $("type-filter").addEventListener("change", (e) => {
+      state.typeFilter = e.target.value;
+      renderJobs();
+    });
+
+    $("radius-slider").addEventListener("input", (e) => {
+      state.maxDistance = Number(e.target.value);
+      $("radius-value").textContent = `${state.maxDistance} km`;
+      renderJobs();
+    });
+
+    document.querySelectorAll(".skill-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        state.selectedSkill = chip.dataset.skill;
+        renderSkillChips();
+        renderJobs();
+      });
+    });
+
+    function handleCardClick(e) {
+      const listenBtn = e.target.closest(".listen-btn");
+      if (listenBtn) {
+        speakJob(listenBtn.dataset.listenId);
+        return;
+      }
+      const applyBtn = e.target.closest(".apply-btn");
+      if (applyBtn) {
+        openApplyModal(applyBtn.dataset.applyId);
+      }
+    }
+    $("jobs-list").addEventListener("click", handleCardClick);
+    $("home-featured-jobs").addEventListener("click", handleCardClick);
+
+    $("modal-close-btn").addEventListener("click", closeApplyModal);
+    $("modal-cancel-btn").addEventListener("click", closeApplyModal);
+
+    $("apply-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!state.modalJobId) return;
+      state.appliedIds.add(state.modalJobId);
+      const name = $("worker-name").value.trim();
+      closeApplyModal();
+      renderJobs();
+      showToast(`Application sent for ${name}! Employer will call/WhatsApp shortly.`);
+    });
+
+    $("post-job-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const title = $("job-title").value.trim();
+      const area = $("job-area").value.trim();
+      const notes = $("job-notes").value.trim() || "Immediate local opening. Contact for details.";
+      const newJob = {
+        id: `job-${Date.now()}`,
+        category: $("job-category").value,
+        pay: Number($("job-pay").value),
+        type: $("job-type").value,
+        employer: $("job-employer").value.trim(),
+        distanceKm: Number($("job-distance").value),
+        verified: true,
+        loc: {
+          en: { title, area, notes },
+          hi: { title, area, notes },
+          kn: { title, area, notes },
+          pa: { title, area, notes }
+        }
+      };
+      state.jobs.unshift(newJob);
+      $("post-job-form").reset();
+      $("job-distance").value = "2.0";
+      state.activeTab = "worker";
+      state.selectedSkill = "All";
+      state.maxDistance = Math.max(state.maxDistance, Math.ceil(newJob.distanceKm));
+      $("radius-slider").value = state.maxDistance;
+      $("radius-value").textContent = `${state.maxDistance} km`;
+      renderTabs();
+      renderSkillChips();
+      renderJobs();
+      showToast(`Published "${title}"!`);
+    });
+
+    $("bot-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = $("bot-input").value;
+      $("bot-input").value = "";
+      handleBotQuery(val);
+    });
+
+    document.querySelectorAll(".bot-quick-btn").forEach((btn) => {
+      btn.addEventListener("click", () => handleBotQuery(btn.dataset.botMsg));
+    });
+
+    $("bot-reset-btn").addEventListener("click", initBotChat);
+
+    const initialHash = window.location.hash.replace("#/", "");
+    if (["home", "jobs", "bot"].includes(initialHash)) {
+      state.currentPage = initialHash;
+    }
+    renderLanguage();
+    renderPage();
+    renderTabs();
+    renderSkillChips();
+    renderJobs();
+    initBotChat();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
